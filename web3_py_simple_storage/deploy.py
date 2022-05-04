@@ -34,7 +34,7 @@ abi = compiled_sol["contracts"]["SimpleStorage.sol"]["SimpleStorage"]["abi"]
 
 # connecting with ganache
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
-chained_id = 5777
+chaind_id = 1337
 my_address = "0xC6d20833F20cC5f0E03c3B03CF955Cb2f11E7B30"
 private_key = "0x6fc0f72e1e3f285d41087565a1e97001d123094c0f6baac1c1e13c5c43d63ade"
 
@@ -43,4 +43,11 @@ SimpleStorage = w3.eth.contract(abi=abi, bytecode=bytecode)
 
 # get the latest transaction 
 nonce= w3.eth.getTransactionCount(my_address)
-print(nonce)
+
+transaction = SimpleStorage.constructor().buildTransaction( {
+    "gasPrice": w3.eth.gas_price, 
+    "chainId": chaind_id, 
+    "from": my_address, 
+    "nonce": nonce, 
+})
+print(transaction)
