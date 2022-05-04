@@ -1,3 +1,4 @@
+from distutils.command.build import build
 from solcx import compile_standard, install_solc
 from web3 import Web3
 import json
@@ -8,7 +9,6 @@ install_solc("0.6.0")
 
 with open("./SimpleStorage.sol", "r") as file:
     simple_storage_file = file.read()
-    print(simple_storage_file)
 
 compiled_sol = compile_standard(
     {
@@ -37,3 +37,10 @@ w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 chained_id = 5777
 my_address = "0xC6d20833F20cC5f0E03c3B03CF955Cb2f11E7B30"
 private_key = "0x6fc0f72e1e3f285d41087565a1e97001d123094c0f6baac1c1e13c5c43d63ade"
+
+# create the contract in python 
+SimpleStorage = w3.eth.contract(abi=abi, bytecode=bytecode)
+
+# get the latest transaction 
+nonce= w3.eth.getTransactionCount(my_address)
+print(nonce)
