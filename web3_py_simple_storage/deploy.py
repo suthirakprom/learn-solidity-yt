@@ -1,4 +1,5 @@
 from solcx import compile_standard, install_solc
+import json
 
 install_solc("0.6.0")
 
@@ -19,4 +20,6 @@ compiled_sol = compile_standard(
     },
     solc_version = "0.6.0",
 )
-print(compiled_sol)
+
+with open("compile_code.json", "w") as file:
+    json.dump(compiled_sol, file)
