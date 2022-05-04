@@ -51,3 +51,5 @@ transaction = SimpleStorage.constructor().buildTransaction( {
     "nonce": nonce, 
 })
 print(transaction)
+
+#4:03:55
