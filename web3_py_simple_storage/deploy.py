@@ -69,10 +69,15 @@ simple_storage = w3.eth.contract(address=tx_receipt.contractAddress, abi=abi)
 # Call = simulate making the call and getting a return value
 # Transact = actually make a state change
 # print(simple_storage.functions.retrieve().call())
-# print(simple_storage.functions.store(15).call())
+print(simple_storage.functions.store(15).call())
 
 store_transaction = simple_storage.functions.store(15).buildTransaction(
-    {"chainId": chaind_id, "from": my_address, "nonce": nonce + 1} # everyone transaction must have a diff nonce
+    {
+        "chainId": chaind_id,
+        "gasPrice": w3.eth.gas_price,
+        "from": my_address,
+        "nonce": nonce + 1,
+    }
 )
 
 signed_store_txn = w3.eth.account.sign_transaction(
