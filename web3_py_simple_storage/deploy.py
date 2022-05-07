@@ -35,11 +35,11 @@ bytecode = compiled_sol["contracts"]["SimpleStorage.sol"]["SimpleStorage"]["evm"
 # get abi
 abi = compiled_sol["contracts"]["SimpleStorage.sol"]["SimpleStorage"]["abi"]
 
-# connecting with ganache
-w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
-chaind_id = 1337
-my_address = "0xC6d20833F20cC5f0E03c3B03CF955Cb2f11E7B30"
-private_key = os.getenv("PRIVATE_KEY")
+# connecting with rinkeby
+w3 = Web3(Web3.HTTPProvider("https://rinkeby.infura.io/v3/3f2b37bb1c404626b00c687aacbc02f9"))
+chaind_id = 4 # Rinkeby chain id is 4
+my_address = "0x9246f813c1C36D9B816BAb34e7366fD3992d1E5f" #your metamask id
+private_key = os.getenv("PRIVATE_KEY")  # metamask private key
 
 # create the contract in python 
 SimpleStorage = w3.eth.contract(abi=abi, bytecode=bytecode)
@@ -54,22 +54,28 @@ transaction = SimpleStorage.constructor().buildTransaction( {
     "nonce": nonce, 
 })
 
+# Sign the transaction
 signed_txn = w3.eth.account.sign_transaction(transaction, private_key=private_key)
+print("Deploying Contract!")
 
 # send this signed transaction 
 tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
+print("Waiting for transaction to finish...")
+
 tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+print(f"Done! Contract deployed to {tx_receipt.contractAddress}")
+
 
 # working with contract:
 # Contract API
 # Contract Address
 simple_storage = w3.eth.contract(address=tx_receipt.contractAddress, abi=abi)
+print(f"Initial Stored Value {simple_storage.functions.retrieve().call()}")
 
 # Making tracsaction :
 # Call = simulate making the call and getting a return value
 # Transact = actually make a state change
 # print(simple_storage.functions.retrieve().call())
-print(simple_storage.functions.store(15).call())
 
 store_transaction = simple_storage.functions.store(15).buildTransaction(
     {
