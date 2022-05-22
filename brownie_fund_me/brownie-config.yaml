@@ -8,7 +8,8 @@ compiler:
 dotenv: .env
 networks:
   rinkeby:
-    eth_usd_price_feed: "0x9246f813c1C36D9B816BAb34e7366fD3992d1E5f"
+    # eth_usd_price_feed: "0x9246f813c1C36D9B816BAb34e7366fD3992d1E5f"
+    eth_usd_price_feed: "0xfd582838403CD2b9fDfCd0a6047CD1A9a47C4D5c"
     verify: True
   development:
     verify: False
